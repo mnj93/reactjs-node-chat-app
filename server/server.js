@@ -1,23 +1,8 @@
-// const express = require('express');
-
-// const app = express();
-
-// app.get('/api/customers',(req, res)=>{
-//  const customers =[
-//     {id : 1, firstName :'Manoj',lastName :'Kumawat'},
-//     {id : 2, firstName :'Rahul',lastName :'Dravid'},
-//     {id : 3, firstName :'Ramesh',lastName :'Patel'}
-//  ]     ;
-//  res.json(customers);
-// });
-// const port = 4000;
-
-// app.listen(port,()=> console.log('Server started on port :'+port));
-
 
 var express = require('express');
 var bodyparser = require('body-parser');
 var mongoose =  require('mongoose');
+var WebSocketServer = require('uws').Server;
 // var mailer =  require('./server/mailer/mailer');
 //var mongoConnection =  require('./server/utils/db');
 
@@ -49,11 +34,44 @@ app.use(bodyparser.json());
         console.log("App now running on port", port);  
     });  
     
+
+    app.wss = new WebSocketServer({
+        server : server
+    });
+    let clients =[];
+    app.wss.on('connection',(ws)=>{
+      
+        const userId =  clients.length+1;
+        console.log('New client connected userId : ',userId);
+        ws.userId =userId;
+
+        let newClient = {
+            ws:ws,
+            userId:userId
+        }
+        clients.push(newClient);
+        //listens for message from client
+        ws.on('message',message=>{
+            console.log('Received : '+message);
+            ws.send('Hello userId : '+userId+' from server..');//send message to client
+        });  
+        
+        ws.on('close',()=>{
+            console.log('userId : '+userId+' disconnected.');
+            clients = clients.filter((client) => client.userId !== userId);
+        })
+    });
+
     // var usersRouter = require('./server/routes/users');
     // var postsRouter = require('./server/routes/posts');
     app.get('/',function(req,res){
-        res.send('Welcome to demo project');
-    })
+        res.send('Welcome to React Chat API');
+    });
+    app.get('/api/all_connections',function(req,res){
+        res.send({
+            connections:clients
+        });
+    });
     // app.use('/api/users',usersRouter);
     // app.use('/api/posts',postsRouter);
     app.post('/sendmail',function(req,res){
