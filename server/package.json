@@ -1,0 +1,37 @@
+{
+  "name": "react-chat-app",
+  "version": "1.0.0",
+  "description": "This is chat app developed using react,redux mongodb and node as backend.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "chat",
+    "messaging"
+  ],
+  "author": "Manoj Kumawat",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "email-templates": "^4.0.1",
+    "express": "^4.16.3",
+    "fs": "0.0.1-security",
+    "handlebars": "^4.0.11",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.2",
+    "node-pre-gyp": "^0.10.3",
+    "nodemailer": "^4.6.7"
+  },
+  "devDependencies": {
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "nodemon": "^1.17.5"
+  }
+}
